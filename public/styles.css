@@ -1,0 +1,142 @@
+body {
+    font-family: Arial, sans-serif;
+    background: #111;
+    color: #eee;
+    padding: 20px;
+}
+
+h1 {
+    color: crimson;
+}
+
+.section {
+    margin-bottom: 30px;
+}
+
+.item {
+    padding: 5px;
+    cursor: pointer;
+}
+
+.item:hover {
+    background: #222;
+}
+.item.selected {
+    background-color: #333;
+    border-left: 4px solid crimson;
+    padding-left: 10px;
+}
+#threads .item {
+    background: #1e1e1e;
+    border: 1px solid #333;
+    border-radius: 10px;
+    padding: 16px;
+    margin-bottom: 12px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+#threads .item:hover {
+    background: #2a2a2a;
+}
+
+#threads .item h3 {
+    margin: 0;
+    font-size: 22px;
+}
+
+#threads .item p {
+    margin-top: 8px;
+    color: #b0b0b0;
+    font-size: 14px;
+}
+#comments .item {
+    background: #242424;
+    border-radius: 8px;
+    padding: 14px;
+    margin-bottom: 12px;
+    border-left: 3px solid #555;
+}
+
+#comments .item h4 {
+    margin: 0;
+    font-size: 16px;
+}
+
+#comments .item p {
+    margin: 10px 0;
+    line-height: 1.5;
+}
+
+#comments .item small {
+    color: #9a9a9a;
+}
+#chapters .item {
+    background: #1a1a1a;
+    border: 1px solid #2f2f2f;
+    border-radius: 8px;
+    padding: 10px 14px;
+    margin-bottom: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: 17px;
+    font-weight: 500;
+}
+
+#chapters .item:hover {
+    background: #252525;
+    transform: translateX(4px);
+}
+
+#chapters .item.selected {
+    background: #3a2b2b;
+    border-left: 5px solid crimson;
+    color: white;
+}
+.layout {
+    display: flex;
+    gap: 25px;
+    align-items: flex-start;
+}
+
+.left-panel {
+    width: 35%;
+}
+
+.right-panel {
+    width: 65%;
+}
+
+#createThread {
+    margin-top: 25px;
+}
+
+textarea,
+input {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+button {
+    padding: 10px 18px;
+    cursor: pointer;
+    border-radius: 6px;
+}
+.search-box {
+    margin-bottom: 15px;
+}
+
+.search-box input {
+    width: 100%;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #333;
+    background: #1d1d1d;
+    color: white;
+    font-size: 15px;
+}
+
+.search-box input:focus {
+    outline: none;
+    border-color: crimson;
+}

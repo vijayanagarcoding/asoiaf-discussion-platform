@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>ASOIAF Discussion</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+    <h1>A Storm of Swords</h1>
+
+<div class="layout">
+
+    <div class="left-panel">
+<div class="search-box">
+
+    <input
+        type="text"
+        id="chapterSearch"
+        placeholder="Search...">
+
+</div>
+        <div id="chapters"></div>
+
+        <div id="threads"></div>
+<div class="search-box">
+    <input
+        type="text"
+        id="threadSearch"
+        placeholder="Search discussions...">
+</div>
+        <div id="createThread" style="display:none;">
+
+            <h2>Create Thread</h2>
+
+            <input
+                type="text"
+                id="threadTitle"
+                placeholder="Enter thread title">
+
+            <br><br>
+
+            <textarea
+                id="threadContent"
+                rows="6"
+                placeholder="Write your discussion..."></textarea>
+
+            <br><br>
+
+            <button id="createThreadBtn">
+                Create Thread
+            </button>
+
+        </div>
+
+    </div>
+
+    <div class="right-panel">
+<div id="welcomePanel">
+
+    <h2>Welcome</h2>
+
+    <p>Select a chapter from the left.</p>
+
+    <p>Choose an existing discussion or create a new one.</p>
+
+</div>
+        <div id="selectedThread" style="display:none;">
+
+            <h2>Discussion</h2>
+
+            <h3 id="selectedThreadTitle"></h3>
+
+            <p id="selectedThreadContent"></p>
+
+        </div>
+
+        <div id="comments"></div>
+
+        <div id="createComment" style="display:none;">
+
+            <h2>Add Comment</h2>
+
+            <textarea
+                id="commentContent"
+                rows="5"
+                placeholder="Write your comment..."></textarea>
+
+            <br><br>
+
+            <button id="createCommentBtn">
+                Post Comment
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<script src="app.js"></script>
+</body>
+
+</html>
