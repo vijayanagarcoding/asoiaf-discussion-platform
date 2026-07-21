@@ -21,7 +21,9 @@ function renderChapters(chapters) {
 
             div.classList.add("selected")
 
-            loadThreads(ch._id)
+           window.currentChapterTitle = ch.title
+
+loadThreads(ch._id)
         }
 
         container.appendChild(div)
@@ -38,6 +40,10 @@ async function loadChapters() {
         console.log("booksRes:", booksRes)
 
         const books = await booksRes.json()
+        const book = books[0]
+
+document.getElementById("bookTitle").innerText = book.title
+document.getElementById("bookAuthor").innerText = book.author
         console.log("books:", books)
 
         const bookId = books[0]._id
@@ -50,7 +56,8 @@ async function loadChapters() {
     
 
         allChapters = chapters
-
+document.getElementById("bookStats").innerText =
+    `Fantasy • ${chapters.length} Chapters`
         console.log("chapters:", chapters)
 
         renderChapters(chapters)
@@ -97,13 +104,21 @@ function renderThreads(threads) {
     container.innerHTML = "<h2>Threads</h2>"
 
     if (threads.length === 0) {
-        container.innerHTML = `
-            <h2>Threads</h2>
-            <p>No discussions yet.</p>
-            <p>Start the first discussion!</p>
-        `
-        return
-    }
+    container.innerHTML = `
+        <h2>Threads</h2>
+
+        <div class="empty-state">
+
+            <h3>💬 No discussions yet</h3>
+
+            <p>
+                Be the first person to start a discussion for this chapter.
+            </p>
+
+        </div>
+    `
+    return
+}
 
     threads.forEach(th => {
 
@@ -133,11 +148,27 @@ const commentText =
             })
 
             div.classList.add("selected")
-
+document.getElementById("welcome").style.display = "none"
+document.getElementById("breadcrumb").innerHTML = `
+    <span>A Storm of Swords</span>
+    &nbsp;›&nbsp;
+    <span>${window.currentChapterTitle}</span>
+    &nbsp;›&nbsp;
+    ${th.title}
+`
             document.getElementById("selectedThread").style.display = "block"
+const discussion = document.getElementById("selectedThread")
 
+discussion.classList.remove("fade-in")
+
+void discussion.offsetWidth
+
+discussion.classList.add("fade-in")
             document.getElementById("selectedThreadTitle").innerText = th.title
+             const time = formatTime(th.createdAt)
 
+document.getElementById("selectedThreadMeta").innerText =
+    `👤 Anonymous   •   🕒 ${time}`   
             document.getElementById("selectedThreadContent").innerText = th.content
 
             loadComments(th._id)
@@ -151,6 +182,14 @@ async function loadThreads(chapterId) {
     window.currentChapterId = chapterId
 document.getElementById("threadSearch").value = ""
     document.getElementById("createThread").style.display = "block"
+const container = document.getElementById("threads")
+
+container.innerHTML = `
+    <h2>Threads</h2>
+    <div class="loading">
+        Loading discussions...
+    </div>
+`
 
     try {
 
@@ -178,12 +217,21 @@ function renderComments(comments) {
     container.innerHTML = "<h2>Comments</h2>"
 
     if (comments.length === 0) {
-        container.innerHTML = `
-            <h2>Comments</h2>
-            <p>No comments found.</p>
-        `
-        return
-    }
+    container.innerHTML = `
+        <h2>Comments</h2>
+
+        <div class="empty-state">
+
+            <h3>📝 No comments yet</h3>
+
+            <p>
+                Start the conversation by posting the first comment.
+            </p>
+
+        </div>
+    `
+    return
+}
 
     comments.forEach(c => {
 
@@ -211,6 +259,14 @@ async function loadComments(threadId) {
     window.currentThreadId = threadId
 
     document.getElementById("createComment").style.display = "block"
+    const container = document.getElementById("comments")
+
+container.innerHTML = `
+    <h2>Comments</h2>
+    <div class="loading">
+        Loading comments...
+    </div>
+`
 
     try {
 
@@ -347,3 +403,11 @@ document
 
         renderComments(filtered)
     })
+    const randomQuote =
+    quotes[Math.floor(Math.random() * quotes.length)]
+
+document.getElementById("quoteText").innerText =
+    `"${randomQuote.quote}"`
+
+document.getElementById("quoteCharacter").innerText =
+    `— ${randomQuote.character}`
