@@ -1,23 +1,23 @@
 const quotes = [
 
     {
-        quote: "The Lannisters send their regards.",
-        character: "Roose Bolton"
+        quote: "Every man must die. But first he must live.",
+        character: "Maester Aemon"
     },
 
     {
-        quote: "There is only one thing we say to Death.",
-        character: "Syrio Forel"
+        quote: "Old stories are like old friends.",
+        character: "Old Nan"
     },
 
     {
-        quote: "The things I do for love.",
-        character: "Jaime Lannister"
+        quote: "Any man who must say 'I am the king' is no true king.",
+        character: "Tywin Lannister"
     },
 
     {
-        quote: "Valar Morghulis.",
-        character: "Jaqen H'ghar"
+        quote: "Rhaegar fought valiantly. Rhaegar fought nobly. Rhaegar fought honorably. And Rhaegar died.",
+        character: "Jorah Mormont"
     }
 
-]
+];

@@ -5,13 +5,15 @@ const Thread = require("../models/Thread")
 // Create thread
 router.post("/chapters/:chapterId/threads", async (req, res) => {
     try {
-        const { title, content } = req.body
+        const { title, content, category } = req.body
 
-        const thread = await Thread.create({
-            chapterId: req.params.chapterId,
-            title,
-            content
-        })
+       const thread = await Thread.create({
+    chapterId: req.params.chapterId,
+    title,
+    content,
+    category
+})
+        
 
         res.status(201).json(thread)
     } catch (error) {

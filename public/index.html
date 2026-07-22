@@ -16,6 +16,24 @@
         alt="Book Cover">
 
     <div class="book-info">
+<div id="platformStats">
+
+    <div class="stat-card">
+        <span id="chapterCount">0</span>
+        <small>Chapters</small>
+    </div>
+
+    <div class="stat-card">
+        <span id="threadCount">0</span>
+        <small>Threads</small>
+    </div>
+
+    <div class="stat-card">
+        <span id="commentCount">0</span>
+        <small>Comments</small>
+    </div>
+
+</div>
 
         <h1 id="bookTitle">
             A Storm of Swords
@@ -36,6 +54,7 @@
 <div class="layout">
 
     <div class="left-panel">
+
 <div class="search-box">
 
     <input
@@ -47,6 +66,23 @@
         <div id="chapters"></div>
 
         <div id="threads"></div>
+        <div class="sort-container">
+
+    <label for="threadSort">Sort:</label>
+
+    <select id="threadSort">
+
+        <option value="newest">Newest</option>
+
+        <option value="oldest">Oldest</option>
+
+        <option value="comments">Most Comments</option>
+
+        <option value="title">Title (A-Z)</option>
+
+    </select>
+
+</div>
 <div class="search-box">
     <input
         type="text"
@@ -70,7 +106,27 @@
                 placeholder="Write your discussion..."></textarea>
 
             <br><br>
+<label for="threadCategory">Category</label>
 
+<select id="threadCategory">
+
+    <option>Theory</option>
+
+    <option>Question</option>
+
+    <option>Analysis</option>
+
+    <option>Character</option>
+
+    <option>Lore</option>
+
+    <option>Prediction</option>
+
+    <option>Discussion</option>
+
+</select>
+
+<br><br>
             <button id="createThreadBtn">
                 Create Thread
             </button>
@@ -143,6 +199,7 @@
     <small id="quoteCharacter"></small>
 
 </footer>
+<div id="toast"></div>
 <script src="quotes.js"></script>
 
 

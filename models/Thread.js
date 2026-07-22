@@ -11,10 +11,20 @@ const threadSchema = new mongoose.Schema(
             type: String,
             required: true
         },
+        category: {
+    type: String,
+    default: "Discussion"
+},
+pinned: {
+    type: Boolean,
+    default: false
+},
         content: {
             type: String,
             required: true
         }
+
+        
     },
     { timestamps: true }
 )

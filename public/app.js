@@ -31,34 +31,46 @@ loadThreads(ch._id)
     })
 }
 async function loadChapters() {
-    
+    const container = document.getElementById("chapters")
+
+container.innerHTML = `
+    <h2>Chapters</h2>
+
+    <div class="loading">
+
+        <div class="spinner"></div>
+
+        <span>Loading chapters...</span>
+
+    </div>
+`
 
     try {
-        console.log("loadChapters called")
+       
 
         const booksRes = await fetch(`${api}/books`)
-        console.log("booksRes:", booksRes)
+        
 
         const books = await booksRes.json()
         const book = books[0]
 
 document.getElementById("bookTitle").innerText = book.title
 document.getElementById("bookAuthor").innerText = book.author
-        console.log("books:", books)
+        
 
         const bookId = books[0]._id
-        console.log("bookId:", bookId)
+       
 
         const res = await fetch(`${api}/books/${bookId}/chapters`)
-        console.log("chapters response:", res)
+        
 
         const chapters = await res.json()
     
 
         allChapters = chapters
-document.getElementById("bookStats").innerText =
-    `Fantasy • ${chapters.length} Chapters`
-        console.log("chapters:", chapters)
+        document.getElementById("chapterCount").innerText = chapters.length
+document.getElementById("bookStats").innerText = "Epic Fantasy"
+        
 
         renderChapters(chapters)
 
@@ -99,9 +111,19 @@ function formatTime(dateString) {
     })
 }
 function renderThreads(threads) {
+threads.sort((a, b) => {
 
+    if (a.pinned === b.pinned) return 0;
+
+    return a.pinned ? -1 : 1;
+
+})
     const container = document.getElementById("threads")
-    container.innerHTML = "<h2>Threads</h2>"
+    container.innerHTML = `
+    <h2>
+        Threads (${threads.length})
+    </h2>
+`
 
     if (threads.length === 0) {
     container.innerHTML = `
@@ -131,14 +153,28 @@ const commentText =
         ? "1 Comment"
         : `${th.commentCount} Comments`
         div.innerHTML = `
-    <h3>${th.title}</h3>
+    <span class="category ${th.category.toLowerCase()}">
+        ${th.category}
+    </span>
 
-    <p>👤 Anonymous</p>
+    <h3>
+    ${th.pinned ? "📌" : ""}
+    ${th.title}
+</h3>
+
+    <p class="thread-author">
+        <img
+            src="images/default-avatar.png"
+            class="avatar">
+
+        Anonymous
+    </p>
 
     <p>💬 ${th.commentCount} Comments</p>
 
     <p>📅 ${date}</p>
 `
+
         
 
         div.onclick = () => {
@@ -167,11 +203,24 @@ discussion.classList.add("fade-in")
             document.getElementById("selectedThreadTitle").innerText = th.title
              const time = formatTime(th.createdAt)
 
-document.getElementById("selectedThreadMeta").innerText =
-    `👤 Anonymous   •   🕒 ${time}`   
+document.getElementById("selectedThreadMeta").innerHTML = `
+    <span class="thread-author">
+        <img
+            src="images/default-avatar.png"
+            class="avatar">
+        Anonymous
+    </span>
+    &nbsp;&nbsp; • &nbsp;&nbsp;
+    🕒 ${time}
+`  
             document.getElementById("selectedThreadContent").innerText = th.content
 
             loadComments(th._id)
+            document.getElementById("selectedThread")
+    .scrollIntoView({
+        behavior: "smooth",
+        block: "start"
+    })
         }
 
         container.appendChild(div)
@@ -186,23 +235,28 @@ const container = document.getElementById("threads")
 
 container.innerHTML = `
     <h2>Threads</h2>
+
     <div class="loading">
-        Loading discussions...
+
+        <div class="spinner"></div>
+
+        <span>Loading discussions...</span>
+
     </div>
 `
 
     try {
 
-        console.log("Clicked chapter:", chapterId)
+        
 
         const res = await fetch(`${api}/chapters/${chapterId}/threads`)
-        console.log("Response:", res)
+       
 
         const threads = await res.json()
-        console.log("Threads:", threads)
+       
 
         allThreads = threads
-
+document.getElementById("threadCount").innerText = threads.length
         renderThreads(threads)
 
     } catch (error) {
@@ -218,7 +272,9 @@ function renderComments(comments) {
 
     if (comments.length === 0) {
     container.innerHTML = `
-        <h2>Comments</h2>
+    <h2>
+        Comments (${comments.length})
+    </h2>
 
         <div class="empty-state">
 
@@ -245,7 +301,15 @@ function renderComments(comments) {
         })
 
         div.innerHTML = `
-            <h4>Anonymous</h4>
+            <h4 class="comment-author">
+
+    <img
+        src="images/default-avatar.png"
+        class="avatar">
+
+    Anonymous
+
+</h4>
             <p>${c.content}</p>
             <small>${date}</small>
         `
@@ -263,101 +327,141 @@ async function loadComments(threadId) {
 
 container.innerHTML = `
     <h2>Comments</h2>
+
     <div class="loading">
-        Loading comments...
+
+        <div class="spinner"></div>
+
+        <span>Loading comments...</span>
+
     </div>
 `
 
     try {
 
-        console.log("Clicked thread:", threadId)
+       
 
         const res = await fetch(`${api}/threads/${threadId}/comments`)
-        console.log("Comments response:", res)
+        
 
         const comments = await res.json()
         allComments = comments
-        console.log("Comments:", comments)
+        document.getElementById("commentCount").innerText = comments.length
+       
 
         renderComments(comments)
     } catch (error) {
         console.error("Comments ERROR:", error)
     }
-}
+} 
 
 async function createThread() {
+const button = document.getElementById("createThreadBtn")
 
+button.disabled = true
+button.innerText = "Creating..."
     const title = document.getElementById("threadTitle").value.trim()
     const content = document.getElementById("threadContent").value.trim()
+    const category = document.getElementById("threadCategory").value
 
     if (!window.currentChapterId) {
-        alert("Please select a chapter first.")
-        return
-    }
-
-    if (!title || !content) {
-        alert("Please enter both title and content.")
-        return
-    }
-
-    const res = await fetch(`${api}/chapters/${window.currentChapterId}/threads`, {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-            title,
-            content
-        })
-    })
-
-    if (!res.ok) {
-        console.error(await res.text())
-        alert("Failed to create thread.")
-        return
-    }
-
-    document.getElementById("threadTitle").value = ""
-    document.getElementById("threadContent").value = ""
-
-    await loadThreads(window.currentChapterId)
+    showToast("⚠️ Please select a chapter first.")
+    return
 }
 
-async function createComment() {
+    if (!title || !content) {
+        showToast("⚠️ Please enter both title and content.")
+        return
+    }
 
+    try {
+
+        const res = await fetch(`${api}/chapters/${window.currentChapterId}/threads`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                title,
+                content,
+                category
+            })
+        })
+
+        if (!res.ok) {
+            throw new Error(await res.text())
+        }
+
+        showToast("✅ Thread created successfully!")
+
+        document.getElementById("threadTitle").value = ""
+        document.getElementById("threadContent").value = ""
+
+        await loadThreads(window.currentChapterId)
+button.disabled = false
+button.innerText = "Create Thread"
+    } catch (error) {
+
+        console.error(error)
+
+        showToast("❌ Failed to create thread.")
+        button.disabled = false
+button.innerText = "Create Thread"
+
+    }
+
+}
+async function createComment() {
+const button = document.getElementById("createCommentBtn")
+
+button.disabled = true
+button.innerText = "Posting..."
     const content = document.getElementById("commentContent").value.trim()
 
     if (!window.currentThreadId) {
-        alert("Please select a thread first.")
+        showToast("⚠️ Please select a thread first.")
         return
     }
 
     if (!content) {
-        alert("Please enter a comment.")
+        showToast("⚠️ Please enter a comment.")
         return
     }
 
-    const res = await fetch(`${api}/threads/${window.currentThreadId}/comments`, {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-            content
+    try {
+
+        const res = await fetch(`${api}/threads/${window.currentThreadId}/comments`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                content
+            })
         })
-    })
 
-    if (!res.ok) {
-        console.error(await res.text())
-        alert("Failed to create comment.")
-        return
+        if (!res.ok) {
+            throw new Error(await res.text())
+        }
+
+        showToast("💬 Comment posted!")
+button.disabled = false
+button.innerText = "Post Comment"
+        document.getElementById("commentContent").value = ""
+
+        await loadComments(window.currentThreadId)
+
+    } catch (error) {
+
+        console.error(error)
+
+        showToast("❌ Failed to post comment.")
+        button.disabled = false
+button.innerText = "Post Comment"
+
     }
 
-    document.getElementById("commentContent").value = ""
-
-    await loadComments(window.currentThreadId)
 }
-
 loadChapters()
 
 document
@@ -411,3 +515,61 @@ document.getElementById("quoteText").innerText =
 
 document.getElementById("quoteCharacter").innerText =
     `— ${randomQuote.character}`
+    document
+.getElementById("threadSort")
+.addEventListener("change", function(){
+
+    let sorted=[...allThreads];
+
+    switch(this.value){
+
+        case "oldest":
+            sorted.sort((a,b)=>
+                new Date(a.createdAt)-new Date(b.createdAt));
+            break;
+
+        case "comments":
+            sorted.sort((a,b)=>
+                b.commentCount-a.commentCount);
+            break;
+
+        case "title":
+            sorted.sort((a,b)=>
+                a.title.localeCompare(b.title));
+            break;
+
+        default:
+            sorted.sort((a,b)=>
+                new Date(b.createdAt)-new Date(a.createdAt));
+    }
+
+    renderThreads(sorted);
+
+});
+function showToast(message){
+
+    const toast = document.getElementById("toast")
+
+    toast.innerText = message
+
+    toast.classList.add("show")
+
+    setTimeout(()=>{
+
+        toast.classList.remove("show")
+
+    },3000)
+
+}
+document
+    .getElementById("createThreadBtn")
+    .addEventListener("click", createThread)
+
+document
+    .getElementById("createCommentBtn")
+    .addEventListener("click", createComment)
+    function confirmAction(message) {
+
+    return confirm(message)
+
+}
