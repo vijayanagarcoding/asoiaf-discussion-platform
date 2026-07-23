@@ -1,0 +1,65 @@
+body{
+
+    margin:0;
+
+    font-family:Arial,sans-serif;
+
+    background:#111;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    height:100vh;
+
+}
+
+.login-container{
+
+    background:#1d1d1d;
+
+    padding:40px;
+
+    border-radius:12px;
+
+    width:350px;
+
+    text-align:center;
+
+}
+
+h1{
+
+    color:crimson;
+
+}
+
+input{
+
+    width:100%;
+
+    margin:12px 0;
+
+    padding:12px;
+
+    box-sizing:border-box;
+
+}
+
+button{
+
+    width:100%;
+
+    padding:12px;
+
+    cursor:pointer;
+
+}
+
+a{
+
+    color:crimson;
+
+}

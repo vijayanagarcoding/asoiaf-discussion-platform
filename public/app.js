@@ -1,4 +1,15 @@
+if (!getToken()) {
+    window.location.replace("login.html")
+}
 const api = "http://localhost:5000/api"
+function authHeaders() {
+
+    return {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${getToken()}`
+    }
+
+}
 let allChapters = []
 let allThreads = []
 let allComments = []
@@ -162,13 +173,7 @@ const commentText =
     ${th.title}
 </h3>
 
-    <p class="thread-author">
-        <img
-            src="images/default-avatar.png"
-            class="avatar">
-
-        Anonymous
-    </p>
+    ${th.user?.username || "Anonymous"}
 
     <p>💬 ${th.commentCount} Comments</p>
 
@@ -208,11 +213,12 @@ document.getElementById("selectedThreadMeta").innerHTML = `
         <img
             src="images/default-avatar.png"
             class="avatar">
-        Anonymous
+        ${t.user?.username || "Anonymous"}
     </span>
     &nbsp;&nbsp; • &nbsp;&nbsp;
     🕒 ${time}
-`  
+`
+  
             document.getElementById("selectedThreadContent").innerText = th.content
 
             loadComments(th._id)
@@ -301,18 +307,20 @@ function renderComments(comments) {
         })
 
         div.innerHTML = `
-            <h4 class="comment-author">
+    <h4 class="comment-author">
 
-    <img
-        src="images/default-avatar.png"
-        class="avatar">
+        <img
+            src="images/default-avatar.png"
+            class="avatar">
 
-    Anonymous
+        ${c.user?.username || "Anonymous"}
 
-</h4>
-            <p>${c.content}</p>
-            <small>${date}</small>
-        `
+    </h4>
+
+    <p>${c.content}</p>
+
+    <small>${date}</small>
+`
 
         container.appendChild(div)
     })
@@ -378,9 +386,7 @@ button.innerText = "Creating..."
 
         const res = await fetch(`${api}/chapters/${window.currentChapterId}/threads`, {
             method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
+            headers: authHeaders(),
             body: JSON.stringify({
                 title,
                 content,
@@ -412,11 +418,13 @@ button.innerText = "Create Thread"
 
 }
 async function createComment() {
-const button = document.getElementById("createCommentBtn")
 
-button.disabled = true
-button.innerText = "Posting..."
-    const content = document.getElementById("commentContent").value.trim()
+    const button = document.getElementById("createCommentBtn")
+
+    const content = document
+        .getElementById("commentContent")
+        .value
+        .trim()
 
     if (!window.currentThreadId) {
         showToast("⚠️ Please select a thread first.")
@@ -428,25 +436,30 @@ button.innerText = "Posting..."
         return
     }
 
+    button.disabled = true
+    button.innerText = "Posting..."
+
     try {
 
-        const res = await fetch(`${api}/threads/${window.currentThreadId}/comments`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                content
-            })
-        })
+        const res = await fetch(
+            `${api}/threads/${window.currentThreadId}/comments`,
+            {
+                method: "POST",
+
+                headers: authHeaders(),
+
+                body: JSON.stringify({
+                    content
+                })
+            }
+        )
 
         if (!res.ok) {
             throw new Error(await res.text())
         }
 
         showToast("💬 Comment posted!")
-button.disabled = false
-button.innerText = "Post Comment"
+
         document.getElementById("commentContent").value = ""
 
         await loadComments(window.currentThreadId)
@@ -456,8 +469,12 @@ button.innerText = "Post Comment"
         console.error(error)
 
         showToast("❌ Failed to post comment.")
+
+    } finally {
+
         button.disabled = false
-button.innerText = "Post Comment"
+
+        button.innerText = "Post Comment"
 
     }
 
@@ -561,15 +578,18 @@ function showToast(message){
     },3000)
 
 }
-document
-    .getElementById("createThreadBtn")
-    .addEventListener("click", createThread)
 
-document
-    .getElementById("createCommentBtn")
-    .addEventListener("click", createComment)
     function confirmAction(message) {
 
     return confirm(message)
 
 }
+const user = getCurrentUser()
+
+if (user) {
+    document.getElementById("currentUser").innerText = user.username
+}
+
+document
+    .getElementById("logoutBtn")
+    .addEventListener("click", logout)

@@ -1,4 +1,5 @@
-const quotes = [
+console.log("quotes.js loaded")
+window.quotes = [
 
     {
         quote: "Every man must die. But first he must live.",

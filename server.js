@@ -26,3 +26,4 @@ app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`)
 })
 app.use("/api", require("./routes/commentRoutes"))
+app.use("/api", require("./routes/authRoutes"))

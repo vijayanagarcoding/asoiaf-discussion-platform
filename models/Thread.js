@@ -7,24 +7,33 @@ const threadSchema = new mongoose.Schema(
             ref: "Chapter",
             required: true
         },
+
         title: {
             type: String,
             required: true
         },
+
         category: {
-    type: String,
-    default: "Discussion"
-},
-pinned: {
-    type: Boolean,
-    default: false
-},
+            type: String,
+            default: "Discussion"
+        },
+
+        pinned: {
+            type: Boolean,
+            default: false
+        },
+
         content: {
             type: String,
             required: true
+        },
+
+        user: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "User",
+            required: true
         }
 
-        
     },
     { timestamps: true }
 )

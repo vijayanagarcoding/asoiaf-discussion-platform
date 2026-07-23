@@ -1,9 +1,11 @@
+const protect = require("../middleware/authMiddleware")
 const Comment = require("../models/Comment")
 const express = require("express")
 const router = express.Router()
 const Thread = require("../models/Thread")
+
 // Create thread
-router.post("/chapters/:chapterId/threads", async (req, res) => {
+router.post("/chapters/:chapterId/threads", protect, async (req, res) => {
     try {
         const { title, content, category } = req.body
 
@@ -11,7 +13,8 @@ router.post("/chapters/:chapterId/threads", async (req, res) => {
     chapterId: req.params.chapterId,
     title,
     content,
-    category
+    category,
+    user: req.user.id
 })
         
 
@@ -26,8 +29,10 @@ router.get("/chapters/:chapterId/threads", async (req, res) => {
     try {
 
         const threads = await Thread.find({
-            chapterId: req.params.chapterId
-        }).sort({ createdAt: -1 })
+    chapterId: req.params.chapterId
+})
+.populate("user", "username")
+.sort({ createdAt: -1 })
 
         const threadsWithCounts = await Promise.all(
 
