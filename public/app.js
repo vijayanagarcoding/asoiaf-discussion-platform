@@ -10,6 +10,32 @@ function authHeaders() {
     }
 
 }
+const currentUser = getCurrentUser()
+if (!currentUser) {
+
+    document.getElementById("createThread").style.display = "none"
+
+    document.getElementById("createComment").style.display = "none"
+
+} else {
+
+    document.getElementById("createThread").style.display = "block"
+
+}
+if (currentUser) {
+
+    document.getElementById("currentUser").innerText =
+        `Welcome, ${currentUser.username} 👋`
+
+    document
+        .getElementById("logoutBtn")
+        .addEventListener("click", logout)
+
+}
+
+document
+    .getElementById("logoutBtn")
+    .addEventListener("click", logout)
 let allChapters = []
 let allThreads = []
 let allComments = []
@@ -330,7 +356,10 @@ async function loadComments(threadId) {
 
     window.currentThreadId = threadId
 
+    if (currentUser) {
     document.getElementById("createComment").style.display = "block"
+}
+
     const container = document.getElementById("comments")
 
 container.innerHTML = `

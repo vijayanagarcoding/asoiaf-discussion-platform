@@ -7,36 +7,53 @@
 </head>
 
 <body>
+<body>
 
     <div class="book-header">
-<div id="userSection">
-    <span id="currentUser"></span>
-    <button id="logoutBtn">Logout</button>
-</div>
+
     <img
         id="bookCover"
         src="images/storm-of-swords.jpg"
         alt="Book Cover">
 
     <div class="book-info">
-<div id="platformStats">
 
-    <div class="stat-card">
-        <span id="chapterCount">0</span>
-        <small>Chapters</small>
-    </div>
+        <div id="userSection">
 
-    <div class="stat-card">
-        <span id="threadCount">0</span>
-        <small>Threads</small>
-    </div>
+            <div id="currentUserInfo">
 
-    <div class="stat-card">
-        <span id="commentCount">0</span>
-        <small>Comments</small>
-    </div>
+                <img
+                    src="images/default-avatar.png"
+                    class="avatar">
 
-</div>
+                <span id="currentUser"></span>
+
+            </div>
+
+            <button id="logoutBtn">
+                Logout
+            </button>
+
+        </div>
+
+        <div id="platformStats">
+
+            <div class="stat-card">
+                <span id="chapterCount">0</span>
+                <small>Chapters</small>
+            </div>
+
+            <div class="stat-card">
+                <span id="threadCount">0</span>
+                <small>Threads</small>
+            </div>
+
+            <div class="stat-card">
+                <span id="commentCount">0</span>
+                <small>Comments</small>
+            </div>
+
+        </div>
 
         <h1 id="bookTitle">
             A Storm of Swords
@@ -47,14 +64,15 @@
         </p>
 
         <small id="bookStats">
-    Loading...
-</small>
+            Loading...
+        </small>
 
     </div>
 
 </div>
 
-<div class="layout">
+    <div class="layout">
+
 
     <div class="left-panel">
 

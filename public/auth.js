@@ -28,7 +28,7 @@ function logout() {
 
     localStorage.removeItem("user")
 
-    location.reload()
+    window.location.replace("login.html")
 
 }
 async function register(username, email, password) {

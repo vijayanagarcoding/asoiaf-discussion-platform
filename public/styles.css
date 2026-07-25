@@ -1,8 +1,15 @@
 body {
+
     font-family: Arial, sans-serif;
+
     background: #111;
+
     color: #eee;
+
+    margin: 0;
+
     padding: 20px;
+
 }
 
 h1 {
@@ -99,26 +106,37 @@ h1 {
     border-left: 5px solid crimson;
     color: white;
 }
+
 .layout {
+
     display: flex;
-    gap: 25px;
+
+    gap: 30px;
+
     align-items: flex-start;
+
 }
 
 .left-panel {
 
+    width: 320px;
+
+    flex-shrink: 0;
+
     position: sticky;
-    top: 20px;
 
-    align-self: flex-start;
+    /* top: 20px; */
 
-    max-height: calc(100vh - 40px);
+/* max-height: calc(100vh - 40px); */
 
-    overflow-y: auto;
+/* overflow-y: auto; */
+
 }
 
 .right-panel {
-    width: 65%;
+
+    flex: 1;
+
 }
 
 #createThread {
@@ -284,23 +302,24 @@ button:active {
 
     font-size: 17px;
 }
-.book-header {
+.book-header{
 
-    display: flex;
+    display:flex;
 
-    align-items: center;
+    align-items:flex-start;
 
-    gap: 24px;
+    gap:25px;
 
-    margin-bottom: 30px;
+    background:#1b1b1b;
 
-    padding: 20px;
+    border:1px solid #333;
 
-    background: #1b1b1b;
+    border-radius:15px;
 
-    border-radius: 15px;
+    padding:25px;
 
-    border: 1px solid #333;
+    margin-bottom:30px;
+
 }
 
 .book-header img {
@@ -417,31 +436,40 @@ button:active {
 }
 #quoteFooter{
 
+    width:100%;
+
     margin-top:60px;
+
+    padding:25px 0;
 
     text-align:center;
 
-    padding:30px;
+    border-top:1px solid #333;
 
     color:#b0b0b0;
 
-    border-top:1px solid #333;
 }
 
-#quoteText{
+#quoteText {
 
-    font-style:italic;
+    font-style: italic;
 
-    font-size:18px;
+    font-size: 20px;
+
+    max-width: 900px;
+
+    margin: 0 auto;
+
 }
 
-#quoteCharacter{
+#quoteCharacter {
 
-    display:block;
+    display: block;
 
-    margin-top:10px;
+    margin-top: 12px;
 
-    color:crimson;
+    color: crimson;
+
 }
 .avatar {
 
@@ -704,11 +732,10 @@ select:focus {
 
     display:flex;
 
-    justify-content:space-between;
-
-    margin-top:20px;
-
     gap:15px;
+
+    margin-bottom:25px;
+
 }
 
 .stat-card{
@@ -723,7 +750,6 @@ select:focus {
 
     text-align:center;
 
-    transition:.25s;
 }
 
 .stat-card:hover{
@@ -753,3 +779,69 @@ button:disabled{
     cursor:not-allowed;
 
 }
+/* ===========================
+   User Section
+=========================== */
+.book-info{
+
+    flex:1;
+
+    display:flex;
+
+    flex-direction:column;
+
+}
+#userSection{
+
+    display:flex;
+
+    justify-content:flex-end;
+
+    align-items:center;
+
+    gap:15px;
+
+    margin-bottom:20px;
+
+}
+
+#currentUserInfo{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:10px;
+
+    font-weight:600;
+
+    color:white;
+
+}
+
+#userSection .avatar {
+
+    width: 42px;
+
+    height: 42px;
+
+    border-radius: 50%;
+
+    object-fit: cover;
+
+    border: 2px solid #444;
+
+}
+
+#logoutBtn{
+
+    width:auto;
+
+    padding:10px 18px;
+
+}
+ 
+    
+
+
+
