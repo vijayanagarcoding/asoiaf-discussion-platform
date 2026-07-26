@@ -20,6 +20,12 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: true
     },
+    bookmarks: [
+    {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Thread"
+    }
+],
     role: {
       type: String,
       enum: ["user", "admin"],

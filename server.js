@@ -27,3 +27,4 @@ app.listen(PORT, () => {
 })
 app.use("/api", require("./routes/commentRoutes"))
 app.use("/api", require("./routes/authRoutes"))
+app.use("/api/users", require("./routes/userRoutes"));

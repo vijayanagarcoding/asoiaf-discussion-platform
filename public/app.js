@@ -178,7 +178,7 @@ threads.sort((a, b) => {
     `
     return
 }
-
+const currentUser = getCurrentUser();
     threads.forEach(th => {
 
         const div = document.createElement("div")
@@ -201,9 +201,46 @@ const commentText =
 
     ${th.user?.username || "Anonymous"}
 
-    <p>💬 ${th.commentCount} Comments</p>
+    <p>❤️ ${th.likes?.length || 0} Likes</p>
+
+    <button
+    class="like-btn"
+    onclick="event.stopPropagation(); toggleLike('${th._id}')">
+
+    ❤️ Like
+
+</button>
+<button
+    class="bookmark-btn"
+    onclick="event.stopPropagation(); toggleBookmark('${th._id}')">
+
+    ⭐ Bookmark
+
+</button>
+<p>💬 ${th.commentCount} Comments</p>
 
     <p>📅 ${date}</p>
+    ${currentUser && th.user &&
+currentUser.id === th.user._id
+? `
+    <button
+        class="edit-thread-btn"
+        onclick="event.stopPropagation(); editThread('${th._id}')">
+
+        ✏️ Edit
+
+    </button>
+
+    <button
+        class="delete-thread-btn"
+        onclick="event.stopPropagation(); deleteThread('${th._id}')">
+
+        🗑️ Delete
+
+    </button>
+`
+: ""}
+
 `
 
         
@@ -239,7 +276,7 @@ document.getElementById("selectedThreadMeta").innerHTML = `
         <img
             src="images/default-avatar.png"
             class="avatar">
-        ${t.user?.username || "Anonymous"}
+        ${th.user?.username || "Anonymous"}
     </span>
     &nbsp;&nbsp; • &nbsp;&nbsp;
     🕒 ${time}
@@ -331,7 +368,33 @@ function renderComments(comments) {
             month: "short",
             year: "numeric"
         })
+const currentUser = getCurrentUser();
+let commentActions = "";
 
+if (
+    currentUser &&
+    c.user &&
+    currentUser.id === c.user._id
+) {
+
+    commentActions = `
+        <button
+            class="edit-comment-btn"
+            onclick="event.stopPropagation(); editComment('${c._id}')">
+
+            ✏️ Edit
+
+        </button>
+
+        <button
+            class="delete-comment-btn"
+            onclick="event.stopPropagation(); deleteComment('${c._id}')">
+
+            🗑️ Delete
+
+        </button>
+    `;
+}
         div.innerHTML = `
     <h4 class="comment-author">
 
@@ -346,6 +409,7 @@ function renderComments(comments) {
     <p>${c.content}</p>
 
     <small>${date}</small>
+    ${commentActions}
 `
 
         container.appendChild(div)
@@ -622,3 +686,292 @@ if (user) {
 document
     .getElementById("logoutBtn")
     .addEventListener("click", logout)
+async function editThread(threadId) {
+
+    const thread = allThreads.find(t => t._id === threadId);
+
+    if (!thread) return;
+
+    const newTitle = prompt("Edit title:", thread.title);
+
+    if (newTitle === null) return;
+
+    const newContent = prompt("Edit content:", thread.content);
+
+    if (newContent === null) return;
+
+    try {
+
+        const res = await fetch(`${api}/threads/${threadId}`, {
+
+            method: "PUT",
+
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${getToken()}`
+            },
+
+            body: JSON.stringify({
+
+                title: newTitle,
+
+                content: newContent
+
+            })
+
+        });
+
+        if (!res.ok) {
+
+            throw new Error(await res.text());
+
+        }
+
+        showToast("✅ Thread updated!");
+
+        await loadThreads(window.currentChapterId);
+
+    } catch (err) {
+
+        console.error(err);
+
+        showToast("❌ Failed to update thread.");
+
+    }
+
+}
+async function deleteThread(threadId) {
+
+    if (!confirm("Delete this thread permanently?")) {
+        return;
+    }
+
+    try {
+
+        const res = await fetch(`${api}/threads/${threadId}`, {
+
+            method: "DELETE",
+
+            headers: {
+                "Authorization": `Bearer ${getToken()}`
+            }
+
+        });
+
+        if (!res.ok) {
+            throw new Error(await res.text());
+        }
+
+        showToast("🗑️ Thread deleted!");
+
+        await loadThreads(window.currentChapterId);
+
+    } catch (error) {
+
+        console.error(error);
+
+        showToast("❌ Failed to delete thread.");
+
+    }
+
+}
+async function editComment(commentId) {
+
+    const comment = allComments.find(c => c._id === commentId);
+
+    if (!comment) return;
+
+    const newContent = prompt(
+        "Edit your comment:",
+        comment.content
+    );
+
+    if (newContent === null) return;
+
+    try {
+
+        const res = await fetch(
+            `${api}/comments/${commentId}`,
+            {
+                method: "PUT",
+
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${getToken()}`
+                },
+
+                body: JSON.stringify({
+                    content: newContent
+                })
+            }
+        );
+
+        if (!res.ok) {
+            throw new Error(await res.text());
+        }
+
+        showToast("✅ Comment updated!");
+
+        await loadComments(window.currentThreadId);
+
+    } catch (error) {
+
+        console.error(error);
+
+        showToast("❌ Failed to update comment.");
+
+    }
+
+}
+
+async function deleteComment(commentId) {
+
+    if (!confirm("Delete this comment permanently?")) {
+        return;
+    }
+
+    try {
+
+        const res = await fetch(
+            `${api}/comments/${commentId}`,
+            {
+                method: "DELETE",
+
+                headers: {
+                    "Authorization": `Bearer ${getToken()}`
+                }
+            }
+        );
+
+        if (!res.ok) {
+            throw new Error(await res.text());
+        }
+
+        showToast("🗑️ Comment deleted!");
+
+        await loadComments(window.currentThreadId);
+
+    } catch (error) {
+
+        console.error(error);
+
+        showToast("❌ Failed to delete comment.");
+
+    }
+
+}
+const cover = document.getElementById("bookCover");
+
+cover.addEventListener("mousemove", (e) => {
+
+    const rect = cover.getBoundingClientRect();
+
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+
+    const rotateY = (x / rect.width - 0.5) * 20;
+    const rotateX = -(y / rect.height - 0.5) * 20;
+
+    cover.style.transform =
+        `perspective(1000px)
+         rotateX(${rotateX}deg)
+         rotateY(${rotateY}deg)
+         scale(1.05)`;
+
+});
+
+cover.addEventListener("mouseleave", () => {
+
+    cover.style.transform =
+        "perspective(1000px) rotateX(0deg) rotateY(0deg) scale(1)";
+
+});
+async function toggleLike(threadId) {
+
+    try {
+
+        const res = await fetch(
+            `${api}/threads/${threadId}/like`,
+            {
+                method: "POST",
+
+                headers: {
+                    "Authorization": `Bearer ${getToken()}`
+                }
+            }
+        );
+
+        if (!res.ok) {
+            throw new Error(await res.text());
+        }
+
+        await loadThreads(window.currentChapterId);
+
+    } catch (error) {
+
+        console.error(error);
+
+        showToast("❌ Failed to like thread.");
+
+    }
+
+}
+async function toggleBookmark(threadId) {
+
+    try {
+
+        const res = await fetch(
+            `${api}/threads/${threadId}/bookmark`,
+            {
+                method: "POST",
+
+                headers: {
+                    "Authorization": `Bearer ${getToken()}`
+                }
+            }
+        );
+
+        if (!res.ok) {
+            throw new Error(await res.text());
+        }
+
+        showToast("⭐ Bookmark updated!");
+
+    } catch (error) {
+
+        console.error(error);
+
+        showToast("❌ Failed to update bookmark.");
+
+    }
+
+}
+document
+    .getElementById("viewBookmarksBtn")
+    .onclick = loadBookmarks;
+    async function loadBookmarks() {
+
+    try {
+
+        const res = await fetch(
+            `${API}/users/bookmarks`,
+            {
+                headers: {
+                    Authorization: `Bearer ${getToken()}`
+                }
+            }
+        );
+
+        const threads = await res.json();
+
+        renderThreads(threads);
+
+        showToast("⭐ Showing bookmarked threads");
+
+    } catch (error) {
+
+        console.error(error);
+
+    }
+
+}
