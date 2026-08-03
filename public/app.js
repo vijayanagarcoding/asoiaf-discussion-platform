@@ -199,7 +199,13 @@ const commentText =
     ${th.title}
 </h3>
 
+    <span
+    class="profile-link"
+    onclick="event.stopPropagation(); openProfile('${th.user._id}')"
+
     ${th.user?.username || "Anonymous"}
+
+</span>
 
     <p>❤️ ${th.likes?.length || 0} Likes</p>
 
@@ -973,5 +979,19 @@ document
         console.error(error);
 
     }
+
+}
+
+document
+    .getElementById("currentUserInfo")
+    .onclick = () => {
+
+        window.location.href = "profile.html";
+
+    };
+    function openProfile(userId) {
+
+    window.location.href =
+        `profile.html?id=${userId}`;
 
 }

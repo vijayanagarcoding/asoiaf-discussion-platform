@@ -855,6 +855,23 @@ button:disabled{
 
     background:crimson;
 }
+#currentUserInfo{
+
+    cursor:pointer;
+
+    transition:.25s;
+
+    border-radius:10px;
+
+    padding:6px 10px;
+
+}
+
+#currentUserInfo:hover{
+
+    background:#2a2a2a;
+
+}
     
 
 
