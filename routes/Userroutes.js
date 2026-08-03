@@ -1,11 +1,15 @@
-const Thread = require("../models/Thread");
-const Comment = require("../models/Comment");
 const express = require("express");
 const router = express.Router();
 
 const User = require("../models/User");
+const Thread = require("../models/Thread");
+const Comment = require("../models/Comment");
+
 const protect = require("../middleware/authMiddleware");
 
+// =======================
+// Get Bookmarks
+// =======================
 router.get("/bookmarks", protect, async (req, res) => {
 
     try {
@@ -30,6 +34,10 @@ router.get("/bookmarks", protect, async (req, res) => {
     }
 
 });
+
+// =======================
+// Get Profile
+// =======================
 router.get("/profile", protect, async (req, res) => {
 
     try {
@@ -38,32 +46,47 @@ router.get("/profile", protect, async (req, res) => {
             .select("-passwordHash")
             .populate("bookmarks");
 
+        const threadCount = await Thread.countDocuments({
+            user: req.user.id
+        });
+
+        const commentCount = await Comment.countDocuments({
+            user: req.user.id
+        });
+
         const threads = await Thread.find({
-    user: req.user.id
-}).sort({ createdAt: -1 });
+            user: req.user.id
+        });
 
-const commentsCount = await Comment.countDocuments({
-    user: req.user.id
-});
+        let likesReceived = 0;
 
-const likesReceived = threads.reduce(
-    (total, thread) => total + thread.likes.length,
-    0
-);
+        threads.forEach(thread => {
+            likesReceived += thread.likes.length;
+        });
+
+        const recentThreads = await Thread.find({
+    user: req.user.id
+})
+.sort({ createdAt: -1 })
+.limit(5);
 
 res.json({
 
     user,
 
-    threadsCreated: threads.length,
+    stats: {
 
-    commentsPosted: commentsCount,
+        threadCount,
 
-    likesReceived,
+        commentCount,
 
-    bookmarks: user.bookmarks.length,
+        likesReceived,
 
-    recentThreads: threads.slice(0, 5)
+        bookmarkCount: user.bookmarks.length
+
+    },
+
+    recentThreads
 
 });
 
@@ -76,4 +99,5 @@ res.json({
     }
 
 });
+
 module.exports = router;

@@ -63,3 +63,22 @@ a{
     color:crimson;
 
 }
+.forgot-password{
+
+    margin-top:20px;
+
+}
+
+.forgot-password a{
+
+    color:#6C3EF5;
+
+    text-decoration:none;
+
+}
+
+.forgot-password a:hover{
+
+    text-decoration:underline;
+
+}

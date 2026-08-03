@@ -30,18 +30,18 @@ async function loadProfile() {
             `Joined ${new Date(data.user.createdAt).toLocaleDateString()}`;
 
         document.getElementById("threadsCount").innerText =
-            data.threadsCreated;
+    data.stats.threadCount;
 
-        document.getElementById("commentsCount").innerText =
-            data.commentsPosted;
+document.getElementById("commentsCount").innerText =
+    data.stats.commentCount;
 
-        document.getElementById("likesCount").innerText =
-            data.likesReceived;
+document.getElementById("likesCount").innerText =
+    data.stats.likesReceived;
 
-        document.getElementById("bookmarksCount").innerText =
-            data.bookmarks;
+document.getElementById("bookmarksCount").innerText =
+    data.stats.bookmarkCount;
 
-        const recentThreads =
+         const recentThreads =
             document.getElementById("recentThreads");
 
         recentThreads.innerHTML = "";
@@ -54,15 +54,29 @@ async function loadProfile() {
 
             div.innerHTML = `
 
-                <h3>${thread.title}</h3>
+    <span class="category ${thread.category.toLowerCase()}">
+        ${thread.category}
+    </span>
 
-                <p>${thread.category}</p>
+    <h3>${thread.title}</h3>
 
-            `;
+    <p>❤️ ${thread.likes.length} Likes</p>
+
+    <p>📅 ${new Date(thread.createdAt).toLocaleDateString()}</p>
+
+`;
+div.style.cursor = "pointer";
+
+div.onclick = () => {
+
+    window.location.href =
+        `index.html?thread=${thread._id}`;
+
+};
 
             recentThreads.appendChild(div);
 
-        });
+        }); 
 
     } catch (error) {
 

@@ -15,10 +15,15 @@ const seed = async () => {
         await Chapter.deleteMany()
 
         const book = await Book.create({
-            title: "A Storm of Swords",
-            author: "George R. R. Martin",
-            slug: "a-storm-of-swords"
-        })
+    title: "A Storm of Swords",
+    author: "George R. R. Martin",
+    slug: "a-storm-of-swords",
+
+    coverImage: "images/storm-of-swords.jpg",
+
+    description:
+        "The Seven Kingdoms descend into chaos as the War of the Five Kings reaches its most decisive stage."
+});
 
         const chaptersWithBook = chapterData.map(ch => ({
             ...ch,

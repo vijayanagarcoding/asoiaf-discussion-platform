@@ -67,7 +67,64 @@ loadThreads(ch._id)
 
     })
 }
-async function loadChapters() {
+async function loadBooks() {
+
+    try {
+
+        const res = await fetch(`${api}/books`);
+
+        const books = await res.json();
+
+        renderBooks(books);
+
+    } catch (error) {
+
+        console.error(error);
+
+    }
+
+}
+function renderBooks(books) {
+
+    const container = document.getElementById("books");
+
+    container.innerHTML = `
+        <h2>Books</h2>
+    `;
+
+    books.forEach(book => {
+
+        const div = document.createElement("div");
+
+        div.className = "item";
+
+       div.innerHTML = `
+    <img
+        src="${book.coverImage}"
+        class="book-cover"
+        alt="${book.title}">
+
+    <h2>${book.title}</h2>
+
+    <p>${book.author}</p>
+
+    <button class="enter-btn">
+        Enter Discussion
+    </button>
+`;
+
+        div.onclick = () => {
+
+            loadChapters(book);
+
+        };
+
+        container.appendChild(div);
+
+    });
+
+}
+async function loadChapters(book)  {
     const container = document.getElementById("chapters")
 
 container.innerHTML = `
@@ -85,18 +142,14 @@ container.innerHTML = `
     try {
        
 
-        const booksRes = await fetch(`${api}/books`)
+        
         
 
-        const books = await booksRes.json()
-        const book = books[0]
+        document.getElementById("bookTitle").innerText = book.title;
 
-document.getElementById("bookTitle").innerText = book.title
-document.getElementById("bookAuthor").innerText = book.author
-        
+document.getElementById("bookAuthor").innerText = book.author;
 
-        const bookId = books[0]._id
-       
+const bookId = book._id;
 
         const res = await fetch(`${api}/books/${bookId}/chapters`)
         
@@ -578,7 +631,11 @@ async function createComment() {
     }
 
 }
-loadChapters()
+document.addEventListener("DOMContentLoaded", () => {
+
+    loadBooks();
+
+});
 
 document
     .getElementById("createThreadBtn")
@@ -960,7 +1017,7 @@ document
     try {
 
         const res = await fetch(
-            `${API}/users/bookmarks`,
+            `${api}/users/bookmarks`,
             {
                 headers: {
                     Authorization: `Bearer ${getToken()}`
