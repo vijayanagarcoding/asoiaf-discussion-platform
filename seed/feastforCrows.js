@@ -3,7 +3,7 @@ const mongoose = require("mongoose")
 const connectDB = require("../config/db")
 const Book = require("../models/Book")
 const Chapter = require("../models/Chapter")
-const chapterData = require("./stormOfSwordsData")
+const chapterData = require("./feastForCrowsData");
 
 const seed = async () => {
     try {
@@ -11,8 +11,12 @@ const seed = async () => {
 
         await connectDB()
 
-        const existingBook = await Book.findOne({
-    slug: "a-storm-of-swords"
+        await Book.deleteOne({
+    slug: "a-feast-for-crows"
+});
+
+const existingBook = await Book.findOne({
+    slug: "a-feast-for-crows"
 });
 
 if (existingBook) {
@@ -28,14 +32,12 @@ if (existingBook) {
 }
 
         const book = await Book.create({
-    title: "A Storm of Swords",
+    title: "A Feast for Crows",
     author: "George R. R. Martin",
-    slug: "a-storm-of-swords",
-
-    coverImage: "images/storm-of-swords.jpg",
-
+    slug: "a-feast-for-crows",
+    coverImage: "images/feast-for-crows.jpg",
     description:
-        "The Seven Kingdoms descend into chaos as the War of the Five Kings reaches its most decisive stage."
+        "With the War of the Five Kings ending, the survivors struggle to rebuild while new ambitions rise across Westeros."
 });
 
         const chaptersWithBook = chapterData.map(ch => ({
