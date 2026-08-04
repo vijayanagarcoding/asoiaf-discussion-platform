@@ -1056,14 +1056,7 @@ const themeBtn = document.getElementById("themeToggle");
 
 if (themeBtn) {
 
-    const savedTheme = localStorage.getItem("theme");
-
-    if (savedTheme === "light") {
-
-        document.body.classList.add("light");
-        themeBtn.innerText = "☀️";
-
-    }
+    
 
     themeBtn.addEventListener("click", () => {
 

@@ -887,21 +887,22 @@ button:disabled{
     background:crimson;
 }
 #currentUserInfo{
+    display: flex;
+    align-items: center;
+    gap: 10px;
 
-    cursor:pointer;
+    font-weight: 600;
+    color: var(--text-color);
 
-    transition:.25s;
+    cursor: pointer;
+    transition: .25s;
 
-    border-radius:10px;
-
-    padding:6px 10px;
-
+    border-radius: 10px;
+    padding: 6px 10px;
 }
 
 #currentUserInfo:hover{
-
-    background:#2a2a2a;
-
+    background: var(--card-color);
 }
  .profile-stats {
     display: grid;

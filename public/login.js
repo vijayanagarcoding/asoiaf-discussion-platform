@@ -1,33 +1,34 @@
+console.log("login.js loaded");
+
 if (getToken()) {
-    location.replace("index.html")
+    location.replace("index.html");
 }
-document
-    .getElementById("loginForm")
-    .addEventListener("submit", async function (e) {
 
-        e.preventDefault()
+document.getElementById("loginForm").addEventListener("submit", async function (e) {
 
-        const email =
-            document.getElementById("email").value.trim()
+    e.preventDefault();
 
-        const password =
-            document.getElementById("password").value
+    console.log("Submit intercepted");
 
-        try {
+    const email = document.getElementById("email").value.trim();
+    const password = document.getElementById("password").value;
 
-            await login(email, password)
+    try {
 
-            window.location.href = "index.html"
+        console.log("Calling login()...");
 
-        } catch (error) {
+        await login(email, password);
 
-            alert(error.message)
+        console.log("Login successful");
 
-        }
+        window.location.href = "index.html";
 
-    })
-    const savedTheme = localStorage.getItem("theme");
+    } catch (error) {
 
-if (savedTheme === "light") {
-    document.body.classList.add("light");
-}
+        console.error(error);
+
+        alert(error.message);
+
+    }
+
+});
