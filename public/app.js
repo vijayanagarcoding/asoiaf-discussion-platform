@@ -1052,3 +1052,35 @@ document
         `profile.html?id=${userId}`;
 
 }
+const themeBtn = document.getElementById("themeToggle");
+
+if (themeBtn) {
+
+    const savedTheme = localStorage.getItem("theme");
+
+    if (savedTheme === "light") {
+
+        document.body.classList.add("light");
+        themeBtn.innerText = "☀️";
+
+    }
+
+    themeBtn.addEventListener("click", () => {
+
+        document.body.classList.toggle("light");
+
+        if (document.body.classList.contains("light")) {
+
+            localStorage.setItem("theme", "light");
+            themeBtn.innerText = "☀️";
+
+        } else {
+
+            localStorage.setItem("theme", "dark");
+            themeBtn.innerText = "🌙";
+
+        }
+
+    });
+
+}

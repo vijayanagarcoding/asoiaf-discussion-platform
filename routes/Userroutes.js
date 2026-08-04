@@ -57,7 +57,30 @@ router.get("/profile", protect, async (req, res) => {
         const threads = await Thread.find({
             user: req.user.id
         });
+const categoryCount = {};
 
+threads.forEach(thread => {
+
+    categoryCount[thread.category] =
+        (categoryCount[thread.category] || 0) + 1;
+
+});
+
+let favouriteCategory = "None";
+
+let max = 0;
+
+for (const category in categoryCount) {
+
+    if (categoryCount[category] > max) {
+
+        max = categoryCount[category];
+
+        favouriteCategory = category;
+
+    }
+
+}
         let likesReceived = 0;
 
         threads.forEach(thread => {
@@ -76,15 +99,17 @@ res.json({
 
     stats: {
 
-        threadCount,
+    threadCount,
 
-        commentCount,
+    commentCount,
 
-        likesReceived,
+    likesReceived,
 
-        bookmarkCount: user.bookmarks.length
+    bookmarkCount: user.bookmarks.length,
 
-    },
+    favouriteCategory
+
+},
 
     recentThreads
 

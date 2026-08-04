@@ -1,14 +1,45 @@
+:root {
+
+    --bg-color: #121212;
+    --card-color: #1f1f1f;
+
+    --text-color: white;
+    --secondary-text: #cfcfcf;
+
+    --button-text: white;
+
+    --accent: #e63946;
+
+}
+
+body.light {
+
+    --bg-color: #f5f5f5;
+    --card-color: white;
+
+    --text-color: #111111;
+    --secondary-text: #333333;
+
+    --button-text: white;
+
+    --accent: #c1121f;
+
+}
 body {
 
     font-family: Arial, sans-serif;
 
-    background: #111;
-
-    color: #eee;
-
+    background: var(--bg-color);
+    color: var(--text-color);
     margin: 0;
 
     padding: 20px;
+
+}
+p,
+small {
+
+    color: var(--text-color);
 
 }
 
@@ -27,7 +58,7 @@ h1 {
 }
 
 .item:hover {
-    background: #222;
+    background: var(--card-color);
     transform: translateY(-3px);
 
     border-color: crimson;
@@ -40,7 +71,7 @@ h1 {
     padding-left: 10px;
 }
 #threads .item {
-    background: #1e1e1e;
+    background: var(--card-color);
     border: 1px solid #333;
     border-radius: 10px;
     padding: 16px;
@@ -60,11 +91,11 @@ h1 {
 
 #threads .item p {
     margin-top: 8px;
-    color: #b0b0b0;
+    color: var(--secondary-text);
     font-size: 14px;
 }
 #comments .item {
-    background: #242424;
+    background: var(--card-color);
     border-radius: 8px;
     padding: 14px;
     margin-bottom: 12px;
@@ -85,7 +116,7 @@ h1 {
     color: #9a9a9a;
 }
 #chapters .item {
-    background: #1a1a1a;
+   background: var(--card-color);
     border: 1px solid #2f2f2f;
     border-radius: 8px;
     padding: 10px 14px;
@@ -104,7 +135,7 @@ h1 {
 #chapters .item.selected {
     background: #3a2b2b;
     border-left: 5px solid crimson;
-    color: white;
+    color: var(--text-color);
 }
 
 .layout {
@@ -153,7 +184,7 @@ button {
 
     background: crimson;
 
-    color: white;
+   color: var(--text-color);
 
     border: none;
 
@@ -194,7 +225,7 @@ button:active {
 
     font-size: 16px;
 
-    color: white;
+    color: var(--text-color);
 
     background: rgba(255,255,255,0.04);
 
@@ -210,7 +241,7 @@ button:active {
 }
 .search-box input::placeholder {
 
-    color: #888;
+    color: var(--secondary-text);
 }
 
 .search-box input:focus {
@@ -224,7 +255,7 @@ button:active {
 .loading {
     text-align: center;
     padding: 20px;
-    color: #b0b0b0;
+    color: var(--secondary-text);
     font-style: italic;
     animation: pulse 1.2s infinite;
 }
@@ -273,7 +304,7 @@ button:active {
 
     font-size: 28px;
 
-    color: white;
+   color: var(--text-color);
 }
 
 #selectedThreadMeta {
@@ -310,7 +341,7 @@ button:active {
 
     gap:25px;
 
-    background:#1b1b1b;
+    background: var(--card-color);
 
     border:1px solid #333;
 
@@ -342,14 +373,14 @@ button:active {
 
     margin: 8px 0;
 
-    color: #c8c8c8;
+    color: var(--secondary-text);
 
     font-size: 25px;
 }
 
 .book-info small {
 
-    color: #8f8f8f;
+    color: var(--secondary-text);
 
     font-size: 15px;
 }
@@ -387,7 +418,7 @@ button:active {
 }
 .empty-state {
 
-    background: #1b1b1b;
+    background: var(--card-color);
 
     border: 1px dashed #444;
 
@@ -409,7 +440,7 @@ button:active {
 
 .empty-state p {
 
-    color: #b0b0b0;
+    color: var(--secondary-text);
 
     margin: 0;
 }
@@ -446,7 +477,7 @@ button:active {
 
     border-top:1px solid #333;
 
-    color:#b0b0b0;
+    color: var(--secondary-text);
 
 }
 
@@ -512,7 +543,7 @@ button:active {
 
     background:#232323;
 
-    color:white;
+  color: var(--button-text);
 
     border:1px solid #444;
 
@@ -535,9 +566,9 @@ select {
 
     border-radius: 10px;
 
-    background: #232323;
+    background: var(--card-color);
 
-    color: white;
+    color: var(--text-color);
 
     border: 1px solid #444;
 
@@ -569,7 +600,7 @@ select:focus {
 
     margin-bottom:10px;
 
-    color:white;
+    color: var(--button-text);
 }
 
 .theory{
@@ -667,7 +698,7 @@ select:focus {
 
     padding: 30px;
 
-    color: white;
+   color: var(--text-color);
 }
 
 .spinner {
@@ -705,7 +736,7 @@ select:focus {
 
     background:#222;
 
-    color:white;
+   color: var(--button-text);
 
     padding:15px 22px;
 
@@ -768,9 +799,9 @@ select:focus {
     color:crimson;
 }
 
-.stat-card small{
+.stat-card small {
 
-    color:#bbb;
+    color: var(--secondary-text);
 }
 button:disabled{
 
@@ -815,7 +846,7 @@ button:disabled{
 
     font-weight:600;
 
-    color:white;
+    color: var(--button-text);
 
 }
 
@@ -880,7 +911,7 @@ button:disabled{
 }
 
 .stat-card {
-    background: #1f1f1f;
+   background: var(--card-color);
     border-radius: 15px;
     padding: 25px;
     text-align: center;
@@ -924,10 +955,9 @@ button:disabled{
 
 .profile-card p {
 
-    color: #bdbdbd;
+    color: var(--secondary-text);
 
     margin: 8px 0;
-
 }
 
 .profile-stats {
@@ -944,7 +974,7 @@ button:disabled{
 
 .stat-card {
 
-    background: #1f1f1f;
+    background: var(--card-color);
 
     border-radius: 15px;
 
@@ -1005,7 +1035,7 @@ button:disabled{
 
     background: #6C3EF5;
 
-    color: white;
+    color: var(--text-color);
 
     font-weight: bold;
 
@@ -1035,4 +1065,5 @@ button:disabled{
     transform: scale(1.04);
 
 }
+
 
