@@ -41,7 +41,7 @@ const login = async (payload) => {
   return generateToken(user)
 }
 
-const generateToken = (user) => {
+ const generateToken= (user) => {
   const token = jwt.sign(
     { id: user._id, role: user.role },
     process.env.JWT_SECRET,
@@ -51,11 +51,12 @@ const generateToken = (user) => {
   return {
     token,
     user: {
-      id: user._id,
-      username: user.username,
-      email: user.email,
-      role: user.role
-    }
+    id: user._id,
+    username: user.username,
+    email: user.email,
+    role: user.role,
+    avatar: user.avatar
+}
   }
 }
 

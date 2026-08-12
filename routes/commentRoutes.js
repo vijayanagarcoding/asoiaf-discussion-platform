@@ -112,7 +112,7 @@ router.get("/threads/:threadId/comments", async (req, res) => {
         const comments = await Comment.find({
             threadId: req.params.threadId
         })
-        .populate("user", "username")
+        .populate("user", "username avatar")
         .sort({ createdAt: 1 })
 
         res.json(comments)

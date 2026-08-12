@@ -11,9 +11,24 @@ const findByEmail = async (email) => {
 const findById = async (id) => {
   return await User.findById(id)
 }
+const updateAvatar = async (id, avatar) => {
 
+    return await User.findByIdAndUpdate(
+
+        id,
+
+        { avatar },
+
+        {
+            new: true
+        }
+
+    ).select("-password");
+
+}
 module.exports = {
   create,
   findByEmail,
-  findById
+  findById,
+  updateAvatar
 }

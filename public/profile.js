@@ -25,7 +25,11 @@ async function loadProfile() {
 
         document.getElementById("profileEmail").innerText =
             data.user.email;
+const avatar =
+    document.getElementById("profileAvatar");
 
+avatar.src =
+    `http://localhost:5000/uploads/${data.user.avatar}`;
         document.getElementById("profileJoined").innerText =
             `Joined ${new Date(data.user.createdAt).toLocaleDateString()}`;
 
@@ -81,6 +85,119 @@ div.onclick = () => {
     } catch (error) {
 
         console.error(error);
+
+    }
+
+}
+const avatarInput =
+    document.getElementById("avatarInput");
+
+document
+    .getElementById("changeAvatarBtn")
+    .addEventListener("click", () => {
+
+        avatarInput.click();
+
+    });
+    avatarInput.addEventListener("change", uploadAvatar);
+
+async function uploadAvatar() {
+
+    const file = avatarInput.files[0];
+
+    if (!file) return;
+
+    const formData = new FormData();
+
+    formData.append("avatar", file);
+
+    try {
+
+        const res = await fetch(`${API}/users/avatar`, {
+
+            method: "POST",
+
+            headers: {
+
+                Authorization: `Bearer ${getToken()}`
+
+            },
+
+            body: formData
+
+        });
+
+        const data = await res.json();
+
+        if (!res.ok) {
+
+            throw new Error(data.message);
+
+        }
+
+        document.getElementById("profileAvatar").src =
+            `http://localhost:5000/uploads/${data.data.avatar}?t=${Date.now()}`;
+
+        alert("Avatar updated!");
+
+    } catch (error) {
+
+        alert(error.message);
+
+    }
+
+}
+    avatarInput.addEventListener("change", uploadAvatar);
+
+async function uploadAvatar() {
+
+    const file = avatarInput.files[0];
+
+    if (!file) return;
+
+    const formData = new FormData();
+
+    formData.append("avatar", file);
+
+    try {
+
+        const res = await fetch(`${API}/users/avatar`, {
+
+            method: "POST",
+
+            headers: {
+
+                Authorization: `Bearer ${getToken()}`
+
+            },
+
+            body: formData
+
+        });
+
+        const data = await res.json();
+
+        if (!res.ok) {
+
+            throw new Error(data.message);
+
+        }
+
+        document.getElementById("profileAvatar").src =
+            `http://localhost:5000/uploads/${data.data.avatar}?t=${Date.now()}`;
+const currentUser = getCurrentUser();
+
+currentUser.avatar = data.data.avatar;
+
+localStorage.setItem(
+    "user",
+    JSON.stringify(currentUser)
+);
+        alert("Avatar updated!");
+
+    } catch (error) {
+
+        alert(error.message);
 
     }
 

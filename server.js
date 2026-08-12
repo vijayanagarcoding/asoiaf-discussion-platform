@@ -1,30 +1,35 @@
-require("dotenv").config()
+require("dotenv").config();
 
-const express = require("express")
-const cors = require("cors")
-const connectDB = require("./config/db")
+const express = require("express");
+const cors = require("cors");
+const path = require("path");
 
-const app = express()
+const connectDB = require("./config/db");
 
-connectDB()
+const app = express();
 
-app.use(cors())
-app.use(express.json())
-const path = require("path")
-app.use(express.static(path.join(__dirname, "public")))
+connectDB();
 
-app.use("/api/books", require("./routes/bookRoutes"))
-app.use("/api", require("./routes/threadRoutes"))   // ← ADD THIS
+app.use(cors());
+app.use(express.json());
+
+app.use(express.static(path.join(__dirname, "public")));
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+
+app.use("/api/books", require("./routes/bookRoutes"));
+app.use("/api", require("./routes/threadRoutes"));
+app.use("/api", require("./routes/commentRoutes"));
+app.use("/api", require("./routes/authRoutes"));
+app.use("/api/users", require("./routes/userRoutes"));
 
 app.get("/", (req, res) => {
-    res.json({ message: "ASOIAF Discussion API Running" })
-})
+    res.json({ message: "ASOIAF Discussion API Running" });
+});
 
-const PORT = process.env.PORT || 5000
-
+const PORT = process.env.PORT || 5000;
+app.get("/test-upload", (req, res) => {
+    res.sendFile(path.join(__dirname, "uploads", "default-avatar.png"));
+});
 app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`)
-})
-app.use("/api", require("./routes/commentRoutes"))
-app.use("/api", require("./routes/authRoutes"))
-app.use("/api/users", require("./routes/userRoutes"));
+    console.log(`Server running on port ${PORT}`);
+});

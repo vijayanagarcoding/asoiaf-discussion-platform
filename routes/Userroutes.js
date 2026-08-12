@@ -6,7 +6,8 @@ const Thread = require("../models/Thread");
 const Comment = require("../models/Comment");
 
 const protect = require("../middleware/authMiddleware");
-
+const upload = require("../middleware/upload");
+const userController = require("../controllers/userController");
 // =======================
 // Get Bookmarks
 // =======================
@@ -124,5 +125,108 @@ res.json({
     }
 
 });
+router.get("/:userId", async (req, res) => {
 
+    try {
+
+        const user = await User.findById(req.params.userId)
+            .select("-passwordHash")
+            .populate("bookmarks");
+
+        if (!user) {
+
+            return res.status(404).json({
+                error: "User not found"
+            });
+
+        }
+
+        const threadCount = await Thread.countDocuments({
+            user: req.params.userId
+        });
+
+        const commentCount = await Comment.countDocuments({
+            user: req.params.userId
+        });
+
+        const threads = await Thread.find({
+            user: req.params.userId
+        });
+
+        const categoryCount = {};
+
+        threads.forEach(thread => {
+
+            categoryCount[thread.category] =
+                (categoryCount[thread.category] || 0) + 1;
+
+        });
+
+        let favouriteCategory = "None";
+
+        let max = 0;
+
+        for (const category in categoryCount) {
+
+            if (categoryCount[category] > max) {
+
+                max = categoryCount[category];
+
+                favouriteCategory = category;
+
+            }
+
+        }
+
+        let likesReceived = 0;
+
+        threads.forEach(thread => {
+
+            likesReceived += thread.likes.length;
+
+        });
+
+        const recentThreads = await Thread.find({
+            user: req.params.userId
+        })
+        .sort({ createdAt: -1 })
+        .limit(5);
+
+        res.json({
+
+            user,
+
+            stats: {
+
+                threadCount,
+
+                commentCount,
+
+                likesReceived,
+
+                bookmarkCount: user.bookmarks.length,
+
+                favouriteCategory
+
+            },
+
+            recentThreads
+
+        });
+
+    } catch (error) {
+
+        res.status(500).json({
+            error: error.message
+        });
+
+    }
+
+});
+router.post(
+    "/avatar",
+    protect,
+    upload.single("avatar"),
+    userController.uploadAvatar
+);
 module.exports = router;

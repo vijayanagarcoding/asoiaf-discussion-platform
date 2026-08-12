@@ -242,6 +242,9 @@ const commentText =
     th.commentCount === 1
         ? "1 Comment"
         : `${th.commentCount} Comments`
+       console.log("Thread User:", th.user);
+console.log("Avatar:", th.user?.avatar);
+console.log(th.user.avatar);
         div.innerHTML = `
     <span class="category ${th.category.toLowerCase()}">
         ${th.category}
@@ -252,13 +255,22 @@ const commentText =
     ${th.title}
 </h3>
 
-    <span
-    class="profile-link"
-    onclick="event.stopPropagation(); openProfile('${th.user._id}')"
+    <div
+    class="thread-user"
+    onclick="event.stopPropagation(); openProfile('${th.user._id}')">
 
-    ${th.user?.username || "Anonymous"}
+    <img
+        class="thread-avatar"
+        src="http://localhost:5000/uploads/${th.user?.avatar || "default-avatar.png"}"
+        alt="Avatar">
 
-</span>
+    <span class="profile-link">
+
+        ${th.user?.username || "Anonymous"}
+
+    </span>
+
+</div>
 
     <p>❤️ ${th.likes?.length || 0} Likes</p>
 
@@ -455,15 +467,22 @@ if (
     `;
 }
         div.innerHTML = `
-    <h4 class="comment-author">
+    <div
+    class="thread-user"
+    onclick="event.stopPropagation(); openProfile('${c.user._id}')">
 
-        <img
-            src="images/default-avatar.png"
-            class="avatar">
+    <img
+        class="thread-avatar"
+        src="http://localhost:5000/uploads/${c.user?.avatar || "default-avatar.png"}"
+        alt="Avatar">
+
+    <span class="profile-link">
 
         ${c.user?.username || "Anonymous"}
 
-    </h4>
+    </span>
+
+</div>
 
     <p>${c.content}</p>
 
@@ -740,10 +759,16 @@ function showToast(message){
     return confirm(message)
 
 }
-const user = getCurrentUser()
+const user = getCurrentUser();
 
 if (user) {
-    document.getElementById("currentUser").innerText = user.username
+
+    document.getElementById("currentUser").innerText =
+        user.username;
+
+    document.getElementById("currentUserAvatar").src =
+        `http://localhost:5000/uploads/${user.avatar}`;
+
 }
 
 document

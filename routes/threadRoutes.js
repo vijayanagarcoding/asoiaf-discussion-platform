@@ -106,7 +106,7 @@ router.get("/chapters/:chapterId/threads", async (req, res) => {
         const threads = await Thread.find({
     chapterId: req.params.chapterId
 })
-.populate("user", "username")
+.populate("user", "username avatar")
 .sort({ createdAt: -1 })
 
         const threadsWithCounts = await Promise.all(

@@ -1066,5 +1066,71 @@ button:disabled{
     transform: scale(1.04);
 
 }
+#avatarSection{
 
+    display:flex;
 
+    flex-direction:column;
+
+    align-items:center;
+
+    justify-content:center;
+
+    gap:15px;
+
+    margin-bottom:20px;
+
+}
+
+#profileAvatar{
+
+    width:170px;
+
+    height:170px;
+
+    border-radius:50%;
+
+    object-fit:cover;
+
+    border:4px solid #6c4cff;
+
+}
+
+#changeAvatarBtn{
+
+    margin-top:20px;
+
+    margin-bottom:20px;
+
+    width:auto;
+
+    padding:10px 20px;
+
+}
+.thread-user{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:10px;
+
+    margin:10px 0;
+
+    cursor:pointer;
+
+}
+
+.thread-avatar{
+
+    width:36px;
+
+    height:36px;
+
+    border-radius:50%;
+
+    object-fit:cover;
+
+    border:2px solid #6c4cff;
+
+}

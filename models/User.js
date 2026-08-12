@@ -35,6 +35,10 @@ resetPasswordExpires: {
     type: Date,
     default: null
 },
+avatar: {
+    type: String,
+    default: "default-avatar.png"
+},
     role: {
       type: String,
       enum: ["user", "admin"],

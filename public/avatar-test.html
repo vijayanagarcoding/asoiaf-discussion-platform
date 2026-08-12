@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Avatar Upload Test</title>
+</head>
+<body>
+
+<h2>Upload Avatar</h2>
+
+<input type="file" id="avatarFile">
+<button id="uploadBtn">Upload</button>
+
+<script>
+const API = "http://localhost:5000/api";
+
+document.getElementById("uploadBtn").addEventListener("click", async () => {
+
+    const file =
+        document.getElementById("avatarFile").files[0];
+
+    if (!file) {
+        return alert("Choose an image first.");
+    }
+
+    const formData = new FormData();
+
+    formData.append("avatar", file);
+
+    const token = localStorage.getItem("token");
+
+    const response = await fetch(`${API}/users/avatar`, {
+
+        method: "POST",
+
+        headers: {
+            Authorization: `Bearer ${token}`
+        },
+
+        body: formData
+
+    });
+
+    const data = await response.json();
+
+    console.log(data);
+
+    if (response.ok) {
+
+        alert("Avatar uploaded!");
+
+    } else {
+
+        alert(data.message);
+
+    }
+
+});
+</script>
+
+</body>
+</html>
